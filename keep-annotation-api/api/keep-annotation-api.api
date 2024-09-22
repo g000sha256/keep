@@ -1,0 +1,3 @@
+public abstract interface annotation class dev/g000sha256/keep/annotation/api/KeepAPI : java/lang/annotation/Annotation {
+}
+
