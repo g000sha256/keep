@@ -31,7 +31,7 @@ private const val MODULE_REFLECTION = "keep-annotation-reflection"
 private const val VERSION_API = BuildConfig.VERSION_API
 private const val VERSION_REFLECTION = BuildConfig.VERSION_REFLECTION
 
-public class KeepPlugin : Plugin<Project> {
+public class KeepPlugin public constructor() : Plugin<Project> {
 
     override fun apply(target: Project) {
         val pluginContainer = target.plugins
@@ -54,12 +54,12 @@ public class KeepPlugin : Plugin<Project> {
     }
 
     private fun DependencyHandler.implementation(group: String, module: String, version: String) {
-        add("implementation", "$group:$module:$version")
+        add("implementation", group + ":" + module + ":" + version)
     }
 
     private fun ApplicationExtension.ignoreR8RulesFrom(group: String, module: String) {
         @Suppress("UnstableApiUsage")
-        defaultConfig.optimization.keepRules { ignoreFrom("$group:$module") }
+        defaultConfig.optimization.keepRules { ignoreFrom(group + ":" + module) }
     }
 
 }

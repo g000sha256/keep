@@ -1,0 +1,49 @@
+public final class dev/g000sha256/keep/test/EnumClassTest : java/lang/Enum {
+	public static final field ONE Ldev/g000sha256/keep/test/EnumClassTest;
+	public static final field TWO Ldev/g000sha256/keep/test/EnumClassTest;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun method ()V
+	public static fun valueOf (Ljava/lang/String;)Ldev/g000sha256/keep/test/EnumClassTest;
+	public static fun values ()[Ldev/g000sha256/keep/test/EnumClassTest;
+}
+
+public final class dev/g000sha256/keep/test/Qwerty {
+	public static final fun method ()V
+}
+
+public final class dev/g000sha256/keep/test/Test1 {
+	public fun <init> ()V
+}
+
+public final class dev/g000sha256/keep/test/Test1$Test2 {
+	public static final field INSTANCE Ldev/g000sha256/keep/test/Test1$Test2;
+}
+
+public final class dev/g000sha256/keep/test/Test1$Test2$Test3 {
+	public static final field Test4 Ldev/g000sha256/keep/test/Test1$Test2$Test3$Test4;
+	public fun <init> ()V
+}
+
+public final class dev/g000sha256/keep/test/Test1$Test2$Test3$Test4 {
+}
+
+public abstract class dev/g000sha256/keep/test/Test1$Test2$Test3$Test4$Test5 {
+	public fun <init> ()V
+	public abstract fun method1 ()V
+	public abstract fun method2 ()V
+}
+
+public final class dev/g000sha256/keep/test/ValueClassTest {
+	public static final synthetic fun box-impl (I)Ldev/g000sha256/keep/test/ValueClassTest;
+	public static fun constructor-impl (I)I
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (ILjava/lang/Object;)Z
+	public static final fun equals-impl0 (II)Z
+	public fun hashCode ()I
+	public static fun hashCode-impl (I)I
+	public static final fun method-impl (I)V
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (I)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()I
+}
+

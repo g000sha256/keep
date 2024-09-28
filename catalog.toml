@@ -1,11 +1,18 @@
 [versions]
 android = "8.6.1"
+autoService = "1.1.1"
 kotlin = "2.0.20"
+ksp = "2.0.20-1.0.25"
 
 [libraries]
 android-gradleApi = { group = "com.android.tools.build", name = "gradle-api", version.ref = "android" }
 
-jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version = "24.1.0" }
+google-autoService = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
+google-autoServiceAnnotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "autoService" }
+
+google-ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+
+jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version = "25.0.0" }
 jetbrains-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 
 [plugins]
@@ -15,7 +22,10 @@ g000sha256-sonatypeMavenCentral = { id = "dev.g000sha256.sonatype-maven-central"
 
 gmazzo-buildConfig = { id = "com.github.gmazzo.buildconfig", version = "5.5.0" }
 
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
 jetbrains-binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.16.3" }
 
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
