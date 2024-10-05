@@ -70,7 +70,7 @@ internal class KeepSymbolProcessor(
         fileWriter.write(classItems, fileName, extension = "pro")
     }
 
-    private fun logClassItems(classItems: Sequence<KeepClassItem>, title: String) {
+    private fun logClassItems(classItems: Collection<KeepClassItem>, title: String) {
         logger.warn(title)
         classItems.forEach { classItem ->
             logger.warn("    class " + classItem.name)

@@ -29,12 +29,11 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyGetter
 import com.google.devtools.ksp.symbol.KSPropertySetter
 import com.google.devtools.ksp.symbol.KSTypeAlias
-import java.util.TreeMap
 
 internal class KeepSymbolsMapper(private val logger: KSPLogger) {
 
-    fun map(resolver: Resolver, symbols: Sequence<KSAnnotated>): Sequence<KeepClassItem> {
-        val map = TreeMap<String, KeepClassItem>()
+    fun map(resolver: Resolver, symbols: Sequence<KSAnnotated>): Collection<KeepClassItem> {
+        val map = sortedMapOf<String, KeepClassItem>()
         symbols.forEach { symbol ->
             val classItems = mapClassItems(symbol)
             classItems.forEach { classItem ->
@@ -43,15 +42,20 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
                 if (currentClassItem == null) {
                     map.put(key, classItem)
                 } else {
-                    val mergedClassItem = currentClassItem.copy(fields = currentClassItem.fields + classItem.fields)
+                    val mergedClassItem = KeepClassItem(
+                        name = currentClassItem.name,
+                        fields = currentClassItem.fields + classItem.fields,
+                        constructors = currentClassItem.constructors + classItem.constructors,
+                        functions = currentClassItem.functions + classItem.functions
+                    )
                     map.put(key, mergedClassItem)
                 }
             }
         }
-        return map.values.asSequence()
+        return map.values
     }
 
-    private fun mapClassItems(symbol: KSAnnotated): List<KeepClassItem> {
+    private fun mapClassItems(symbol: KSAnnotated): Collection<KeepClassItem> {
         when (symbol) {
             is KSClassDeclaration -> return symbol.getClassItems()
             is KSFile -> return symbol.getClassItems()
@@ -64,15 +68,15 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
     }
 
-    private fun KSClassDeclaration.getClassItems(): List<KeepClassItem> {
+    private fun KSClassDeclaration.getClassItems(): Collection<KeepClassItem> {
         return findClassItems(this)
     }
 
-    private fun KSFile.getClassItems(): List<KeepClassItem> {
+    private fun KSFile.getClassItems(): Collection<KeepClassItem> {
         return findClassItems(this)
     }
 
-    private fun KSFunctionDeclaration.getClassItems(): List<KeepClassItem> {
+    private fun KSFunctionDeclaration.getClassItems(): Collection<KeepClassItem> {
         val parentNode = parent
         when (parentNode) {
             is KSClassDeclaration -> return findClassItems(parentNode)
@@ -81,7 +85,7 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
     }
 
-    private fun KSPropertyDeclaration.getClassItems(): List<KeepClassItem> {
+    private fun KSPropertyDeclaration.getClassItems(): Collection<KeepClassItem> {
         val parentNode = parent
         when (parentNode) {
             is KSClassDeclaration -> return findClassItems(parentNode)
@@ -90,7 +94,7 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
     }
 
-    private fun KSPropertyGetter.getClassItems(): List<KeepClassItem> {
+    private fun KSPropertyGetter.getClassItems(): Collection<KeepClassItem> {
         val parentNode = parent
         when (parentNode) {
             is KSClassDeclaration -> return findClassItems(parentNode)
@@ -99,7 +103,7 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
     }
 
-    private fun KSPropertySetter.getClassItems(): List<KeepClassItem> {
+    private fun KSPropertySetter.getClassItems(): Collection<KeepClassItem> {
         val parentNode = parent
         when (parentNode) {
             is KSClassDeclaration -> return findClassItems(parentNode)
@@ -108,7 +112,7 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
     }
 
-    private fun KSTypeAlias.getClassItems(): List<KeepClassItem> {
+    private fun KSTypeAlias.getClassItems(): Collection<KeepClassItem> {
         val parentNode = parent
         when (parentNode) {
             is KSFile -> return findClassItems(parentNode)
@@ -116,11 +120,68 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
     }
 
-    private fun findClassItems(classDeclaration: KSClassDeclaration): List<KeepClassItem> {
-        return getClasses(classDeclaration)
+    private fun findClassItems(classDeclaration: KSClassDeclaration): Collection<KeepClassItem> {
+        val classItems = mutableListOf<KeepClassItem>()
+
+        var currentClassDeclaration = classDeclaration
+        var innerCompanionClassName: String? = null
+        while (true) {
+            val classType = getClassType(currentClassDeclaration)
+
+            val classItem = createClassItem(currentClassDeclaration, classType, innerCompanionClassName)
+            if (classItem != null) {
+                classItems.add(classItem)
+            }
+
+            val parentNode = currentClassDeclaration.parent
+            if (parentNode !is KSClassDeclaration) {
+                break
+            }
+
+            innerCompanionClassName = getInnerCompanionClassName(classType, classItem)
+            currentClassDeclaration = parentNode
+        }
+
+        return classItems
     }
 
-    private fun findClassItems(file: KSFile): List<KeepClassItem> {
+    private fun createClassItem(
+        classDeclaration: KSClassDeclaration,
+        classType: ClassType,
+        innerCompanionClassName: String?
+    ): KeepClassItem? {
+        val qualifiedName = getQualifiedName(classDeclaration)
+
+        if (classType is ClassType.EnumEntry) {
+            return null
+        }
+
+        if (classType is ClassType.Object) {
+            return createClassItem(className = qualifiedName, fieldName = "INSTANCE", fieldType = qualifiedName)
+        }
+
+        if (innerCompanionClassName == null) {
+            return createClassItem(qualifiedName)
+        }
+
+        val fieldName = innerCompanionClassName.substringAfterLast(delimiter = "$")
+        val fieldType = innerCompanionClassName
+        return createClassItem(className = qualifiedName, fieldName, fieldType)
+    }
+
+    private fun getInnerCompanionClassName(classType: ClassType, classItem: KeepClassItem?): String? {
+        if (classItem == null) {
+            return null
+        }
+
+        if (classType is ClassType.CompanionObject) {
+            return classItem.name
+        }
+
+        return null
+    }
+
+    private fun findClassItems(file: KSFile): Collection<KeepClassItem> {
         val className = getClassName(file)
         val classItem = createClassItem(className)
         return listOf(classItem)
@@ -149,69 +210,13 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
     //////
     //////
 
-    private fun getClasses(classDeclaration: KSClassDeclaration): List<KeepClassItem> {
-        val classes = mutableListOf<KeepClassItem>()
-
-        val classHierarchy = getClassHierarchy(classDeclaration)
-
-        for (index in classHierarchy.indices) {
-            val currentClassInfo = classHierarchy.get(index)
-            val nextClassInfo = classHierarchy.getOrNull(index + 1)
-
-            val qualifiedName = currentClassInfo.qualifiedName
-
-            if (nextClassInfo != null) {
-                if (nextClassInfo.type is ClassInfo.Type.Companion) {
-                    val fieldType = qualifiedName + '$' + nextClassInfo.simpleName
-                    classes += createClassItem(className = qualifiedName, fieldName = nextClassInfo.simpleName, fieldType)
-                    continue
-                }
-            }
-
-            if (currentClassInfo.type is ClassInfo.Type.Object) {
-                classes += createClassItem(className = qualifiedName, fieldName = "INSTANCE", fieldType = qualifiedName)
-                continue
-            }
-
-            classes += createClassItem(qualifiedName)
-        }
-
-        return classes
-    }
-
-    private fun getClassHierarchy(classDeclaration: KSClassDeclaration): List<ClassInfo> {
-        val classes = mutableListOf<ClassInfo>()
-
-        var currentClassDeclaration = classDeclaration
-        while (true) {
-            val info = getClassInfo(currentClassDeclaration)
-            classes.add(0, info)
-
-            val parentNode = currentClassDeclaration.parent
-            if (parentNode !is KSClassDeclaration) {
-                break
-            }
-
-            currentClassDeclaration = parentNode
-        }
-
-        return classes
-    }
-
-    private fun getClassInfo(classDeclaration: KSClassDeclaration): ClassInfo {
-        val qualifiedName = getQualifiedName(classDeclaration)
-        val simpleName = classDeclaration.simpleName.asString()
-        val type = getClassType(classDeclaration)
-        return ClassInfo(qualifiedName, simpleName, type)
-    }
-
     private fun getQualifiedName(classDeclaration: KSClassDeclaration): String {
-        val classes = mutableListOf<String>()
+        val classNames = mutableListOf<String>()
 
         var currentClassDeclaration = classDeclaration
         while (true) {
             val simpleName = currentClassDeclaration.simpleName.asString()
-            classes.add(0, simpleName)
+            classNames.add(0, simpleName)
 
             val parentNode = currentClassDeclaration.parent
             if (parentNode !is KSClassDeclaration) {
@@ -222,17 +227,20 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         }
 
         val packageName = classDeclaration.packageName.asString()
-        return classes.joinToString(separator = "$", prefix = packageName + ".")
+        return classNames.joinToString(separator = "$", prefix = packageName + ".")
     }
 
-    private fun getClassType(classDeclaration: KSClassDeclaration): ClassInfo.Type {
-        if (classDeclaration.classKind == ClassKind.OBJECT) {
-            if (classDeclaration.isCompanionObject) {
-                return ClassInfo.Type.Companion()
+    private fun getClassType(classDeclaration: KSClassDeclaration): ClassType {
+        when (classDeclaration.classKind) {
+            ClassKind.ENUM_ENTRY -> return ClassType.EnumEntry()
+            ClassKind.OBJECT -> {
+                if (classDeclaration.isCompanionObject) {
+                    return ClassType.CompanionObject()
+                }
+                return ClassType.Object()
             }
-            return ClassInfo.Type.Object()
+            else -> return ClassType.Class()
         }
-        return ClassInfo.Type.Class()
     }
 
     private fun createClassItem(className: String): KeepClassItem {
@@ -254,17 +262,15 @@ internal class KeepSymbolsMapper(private val logger: KSPLogger) {
         )
     }
 
-    private class ClassInfo(val qualifiedName: String, val simpleName: String, val type: Type) {
+    private sealed interface ClassType {
 
-        sealed interface Type {
+        class Class : ClassType
 
-            class Class : Type
+        class CompanionObject : ClassType
 
-            class Companion : Type
+        class EnumEntry : ClassType
 
-            class Object : Type
-
-        }
+        class Object : ClassType
 
     }
 

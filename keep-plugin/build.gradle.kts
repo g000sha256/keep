@@ -31,18 +31,22 @@ kotlin {
 }
 
 buildConfig {
-    val projectApi = project(":keep-annotation-api")
-    buildConfigField("VERSION_API", projectApi.version as String)
+    val projectAnnotationApi = project(":keep-annotation-api")
+    buildConfigField("VERSION_ANNOTATION_API", projectAnnotationApi.version as String)
 
-    val projectReflection = project(":keep-annotation-reflection")
-    buildConfigField("VERSION_REFLECTION", projectReflection.version as String)
+    val projectAnnotationReflection = project(":keep-annotation-reflection")
+    buildConfigField("VERSION_ANNOTATION_REFLECTION", projectAnnotationReflection.version as String)
+
+    val projectCompiler = project(":keep-compiler")
+    buildConfigField("VERSION_COMPILER", projectCompiler.version as String)
 }
 
 dependencies {
     implementation(catalog.jetbrains.annotations)
     implementation(catalog.jetbrains.kotlin)
 
-    implementation(catalog.android.gradleApi)
+    implementation(catalog.android.gradle)
+    implementation(catalog.google.kspPlugin)
 }
 
 publishing {

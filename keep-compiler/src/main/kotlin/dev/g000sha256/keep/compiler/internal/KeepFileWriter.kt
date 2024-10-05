@@ -22,9 +22,11 @@ import java.io.Writer
 
 internal class KeepFileWriter(private val codeGenerator: CodeGenerator) {
 
-    fun write(classItems: Sequence<KeepClassItem>, name: String, extension: String) {
-        val writer = createWriter(name, extension)
-        writer.use { it.write(classItems) }
+    fun write(classItems: Collection<KeepClassItem>, name: String, extension: String) {
+        if (classItems.size > 0) {
+            val writer = createWriter(name, extension)
+            writer.use { it.write(classItems) }
+        }
     }
 
     private fun createWriter(name: String, extension: String): Writer {
@@ -33,7 +35,7 @@ internal class KeepFileWriter(private val codeGenerator: CodeGenerator) {
         return outputStream.writer(charset = Charsets.UTF_8)
     }
 
-    private fun Writer.write(classItems: Sequence<KeepClassItem>) {
+    private fun Writer.write(classItems: Collection<KeepClassItem>) {
         classItems.forEachIndexed { index, classItem ->
             if (index > 0) {
                 writeNewLine()

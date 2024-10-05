@@ -5,12 +5,13 @@ kotlin = "2.0.20"
 ksp = "2.0.20-1.0.25"
 
 [libraries]
-android-gradleApi = { group = "com.android.tools.build", name = "gradle-api", version.ref = "android" }
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "android" }
 
 google-autoService = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
 google-autoServiceAnnotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "autoService" }
 
 google-ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+google-kspPlugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 
 jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version = "25.0.0" }
 jetbrains-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }

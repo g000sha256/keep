@@ -16,17 +16,77 @@
 
 package dev.g000sha256.keep.compiler.internal
 
-internal data class KeepClassItem(
+internal class KeepClassItem(
     val name: String,
     val fields: Set<Field>,
     val constructors: Set<Constructor>,
     val functions: Set<Function>
 ) {
 
-    data class Field(val name: String, val type: String)
+    class Field(val name: String, val type: String) {
 
-    data class Constructor(val name: String, val types: List<String>)
+        override fun equals(other: Any?): Boolean {
+            if (other === this) {
+                return true
+            }
 
-    data class Function(val name: String, val types: List<String>)
+            if (other !is Field) {
+                return false
+            }
+
+            return other.name == name && other.type == type
+        }
+
+        override fun hashCode(): Int {
+            var result = name.hashCode()
+            result = 31 * result + type.hashCode()
+            return result
+        }
+
+    }
+
+    class Constructor(val name: String, val types: Collection<String>) {
+
+        override fun equals(other: Any?): Boolean {
+            if (other === this) {
+                return true
+            }
+
+            if (other !is Constructor) {
+                return false
+            }
+
+            return other.name == name && other.types == types
+        }
+
+        override fun hashCode(): Int {
+            var result = name.hashCode()
+            result = 31 * result + types.hashCode()
+            return result
+        }
+
+    }
+
+    class Function(val name: String, val types: Collection<String>) {
+
+        override fun equals(other: Any?): Boolean {
+            if (other === this) {
+                return true
+            }
+
+            if (other !is Function) {
+                return false
+            }
+
+            return other.name == name && other.types == types
+        }
+
+        override fun hashCode(): Int {
+            var result = name.hashCode()
+            result = 31 * result + types.hashCode()
+            return result
+        }
+
+    }
 
 }
