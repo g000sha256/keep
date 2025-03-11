@@ -1,0 +1,30 @@
+public abstract interface class dev/g000sha256/keep/KeepApplicationExtension {
+	public abstract fun getOutputDirectory ()Lorg/gradle/api/provider/Property;
+}
+
+public abstract interface class dev/g000sha256/keep/KeepLibraryExtension {
+	public abstract fun getOutputDirectory ()Lorg/gradle/api/provider/Property;
+	public abstract fun getType ()Lorg/gradle/api/provider/Property;
+}
+
+public abstract class dev/g000sha256/keep/KeepLibraryExtension$Type {
+}
+
+public final class dev/g000sha256/keep/KeepLibraryExtension$Type$All : dev/g000sha256/keep/KeepLibraryExtension$Type {
+	public static final field INSTANCE Ldev/g000sha256/keep/KeepLibraryExtension$Type$All;
+}
+
+public final class dev/g000sha256/keep/KeepLibraryExtension$Type$ApiOnly : dev/g000sha256/keep/KeepLibraryExtension$Type {
+	public static final field INSTANCE Ldev/g000sha256/keep/KeepLibraryExtension$Type$ApiOnly;
+}
+
+public final class dev/g000sha256/keep/KeepLibraryExtension$Type$ReflectionOnly : dev/g000sha256/keep/KeepLibraryExtension$Type {
+	public static final field INSTANCE Ldev/g000sha256/keep/KeepLibraryExtension$Type$ReflectionOnly;
+}
+
+public final class dev/g000sha256/keep/KeepPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+

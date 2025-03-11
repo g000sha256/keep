@@ -1,0 +1,3 @@
+public abstract interface annotation class dev/g000sha256/keep/annotation/reflection/KeepReflection : java/lang/annotation/Annotation {
+}
+

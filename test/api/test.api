@@ -1,0 +1,116 @@
+public final class dev/g000sha256/keep/test/ClassDeclarationsTest {
+	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun extensionFunction-LRDsOJo (J)V
+	public final fun function-UwyO8pc ()J
+	public final fun getGetter-UwyO8pc ()J
+	public final fun getGetter-wmV0flA (J)J
+	public final fun getParam-UwyO8pc ()J
+	public final fun getProperty-UwyO8pc ()J
+	public final fun getSetter-UwyO8pc ()J
+	public final fun getSetter-wmV0flA (J)J
+	public final fun parametersFunction-LRDsOJo (J)V
+	public final fun setParam-LRDsOJo (J)V
+	public final fun setSetter-LRDsOJo (J)V
+	public final fun setSetter-QTBD994 (JJ)V
+	public final fun suspendFunction-5sfh64U (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/g000sha256/keep/test/ClassTest {
+	public fun <init> ()V
+}
+
+public final class dev/g000sha256/keep/test/CompanionObjectDeclarationsTest {
+	public static final field Companion Ldev/g000sha256/keep/test/CompanionObjectDeclarationsTest$Companion;
+	public fun <init> ()V
+}
+
+public final class dev/g000sha256/keep/test/CompanionObjectDeclarationsTest$Companion {
+	public final fun extensionFunction-LRDsOJo (J)V
+	public final fun function-UwyO8pc ()J
+	public final fun getGetter-UwyO8pc ()J
+	public final fun getGetter-wmV0flA (J)J
+	public final fun getProperty-UwyO8pc ()J
+	public final fun getSetter-5sfh64U (Ljava/lang/String;)J
+	public final fun getSetter-UwyO8pc ()J
+	public final fun parametersFunction-LRDsOJo (J)V
+	public final fun setSetter-HG0u8IE (Ljava/lang/String;J)V
+	public final fun setSetter-LRDsOJo (J)V
+	public final fun suspendFunction-5sfh64U (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/g000sha256/keep/test/CompanionObjectTest {
+	public static final field Companion Ldev/g000sha256/keep/test/CompanionObjectTest$Companion;
+	public fun <init> ()V
+}
+
+public final class dev/g000sha256/keep/test/CompanionObjectTest$Companion {
+}
+
+public final class dev/g000sha256/keep/test/EnumClassDeclarationsTest : java/lang/Enum {
+	public static final field VALUE Ldev/g000sha256/keep/test/EnumClassDeclarationsTest;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/g000sha256/keep/test/EnumClassDeclarationsTest;
+	public static fun values ()[Ldev/g000sha256/keep/test/EnumClassDeclarationsTest;
+}
+
+public final class dev/g000sha256/keep/test/EnumClassTest : java/lang/Enum {
+	public static final field VALUE Ldev/g000sha256/keep/test/EnumClassTest;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/g000sha256/keep/test/EnumClassTest;
+	public static fun values ()[Ldev/g000sha256/keep/test/EnumClassTest;
+}
+
+public final class dev/g000sha256/keep/test/FileDeclarationsTestKt {
+	public static final fun extensionFunction-LRDsOJo (J)V
+	public static final fun function ()J
+	public static final fun getGetter ()J
+	public static final fun getGetter-LRDsOJo (J)J
+	public static final fun getProperty ()J
+	public static final fun getSetter ()J
+	public static final fun getSetter (Ljava/lang/String;)J
+	public static final fun parametersFunction-LRDsOJo (J)V
+	public static final fun setSetter-HG0u8IE (Ljava/lang/String;J)V
+	public static final fun setSetter-LRDsOJo (J)V
+	public static final fun suspendFunction (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/g000sha256/keep/test/InterfaceDeclarationsTest {
+	public abstract fun extensionFunction-LRDsOJo (J)V
+	public abstract fun function-UwyO8pc ()J
+	public abstract fun getGetter-UwyO8pc ()J
+	public abstract fun getGetter-wmV0flA (J)J
+	public abstract fun getSetter-5sfh64U (Ljava/lang/String;)J
+	public abstract fun getSetter-UwyO8pc ()J
+	public abstract fun parametersFunction-LRDsOJo (J)V
+	public abstract fun setSetter-HG0u8IE (Ljava/lang/String;J)V
+	public abstract fun setSetter-LRDsOJo (J)V
+	public abstract fun suspendFunction-5sfh64U (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/g000sha256/keep/test/NamedCompanionObjectTest {
+	public static final field CustomCompanionObject Ldev/g000sha256/keep/test/NamedCompanionObjectTest$CustomCompanionObject;
+	public fun <init> ()V
+}
+
+public final class dev/g000sha256/keep/test/NamedCompanionObjectTest$CustomCompanionObject {
+}
+
+public final class dev/g000sha256/keep/test/ObjectDeclarationsTest {
+	public static final field INSTANCE Ldev/g000sha256/keep/test/ObjectDeclarationsTest;
+	public final fun extensionFunction-LRDsOJo (J)V
+	public final fun function-UwyO8pc ()J
+	public final fun getGetter-UwyO8pc ()J
+	public final fun getGetter-wmV0flA (J)J
+	public final fun getProperty-UwyO8pc ()J
+	public final fun getSetter-5sfh64U (Ljava/lang/String;)J
+	public final fun getSetter-UwyO8pc ()J
+	public final fun parametersFunction-LRDsOJo (J)V
+	public final fun setSetter-HG0u8IE (Ljava/lang/String;J)V
+	public final fun setSetter-LRDsOJo (J)V
+	public final fun suspendFunction-5sfh64U (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/g000sha256/keep/test/ObjectTest {
+	public static final field INSTANCE Ldev/g000sha256/keep/test/ObjectTest;
+}
+
