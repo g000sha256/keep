@@ -24,7 +24,36 @@ plugins {
 }
 ```
 
-## Usage
+### Plugin customization
+
+#### Library module
+
+```kotlin
+keep {
+    outputDirectory = <File>
+    type = <KeepLibraryExtension.Type> // All / ApiOnly / ReflectionOnly
+}
+```
+
+#### Application module
+
+Annotation and rules for API don't apply to the application module.
+
+```kotlin
+keep {
+    outputDirectory = <File>
+}
+```
+
+### Generate rules
+
+Apply annotations and generate rules with the command:
+
+```
+./gradlew keepGenerate
+```
+
+## Annotations usage
 
 The `KeepApi` and `KeepReflection` annotations are used similarly but serve different purposes.
 
